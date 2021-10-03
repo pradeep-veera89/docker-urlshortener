@@ -82,6 +82,9 @@
     "doctrine/sql-formatter": {
         "version": "1.1.1"
     },
+    "egulias/email-validator": {
+        "version": "3.1.1"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
@@ -176,6 +179,9 @@
             ".env"
         ]
     },
+    "symfony/form": {
+        "version": "v4.4.31"
+    },
     "symfony/framework-bundle": {
         "version": "4.4",
         "recipe": {
@@ -209,6 +215,21 @@
     "symfony/inflector": {
         "version": "v4.4.27"
     },
+    "symfony/intl": {
+        "version": "v4.4.31"
+    },
+    "symfony/mailer": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "bbfc7e27257d3a3f12a6fb0a42540a42d9623a37"
+        },
+        "files": [
+            "config/packages/mailer.yaml"
+        ]
+    },
     "symfony/maker-bundle": {
         "version": "1.0",
         "recipe": {
@@ -220,6 +241,12 @@
     },
     "symfony/mime": {
         "version": "v4.4.31"
+    },
+    "symfony/options-resolver": {
+        "version": "v4.4.30"
+    },
+    "symfony/polyfill-intl-icu": {
+        "version": "v1.23.0"
     },
     "symfony/polyfill-intl-idn": {
         "version": "v1.23.0"
@@ -312,6 +339,19 @@
             "templates/base.html.twig"
         ]
     },
+    "symfony/validator": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "3eb8df139ec05414489d55b97603c5f6ca0c44cb"
+        },
+        "files": [
+            "config/packages/test/validator.yaml",
+            "config/packages/validator.yaml"
+        ]
+    },
     "symfony/var-dumper": {
         "version": "v4.4.31"
     },
@@ -334,6 +374,9 @@
     },
     "symfony/yaml": {
         "version": "v4.4.29"
+    },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.5.0"
     },
     "twig/extra-bundle": {
         "version": "v3.3.3"
