@@ -126,10 +126,19 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        if(!empty($token) && !empty($providerKey)) {
-            return new RedirectResponse($this->urlGenerator->generate('app_homepage'));
+        #dd($token->getUser()->getRoles());
+        // Try to redirect the user to their original intended path
+ /*       if($targetPath = $this->getTargetPath($request->getSession(),$providerKey)) {
+            return new RedirectResponse($targetPath);
         }
-        return new RedirectResponse($this->urlGenerator->generate('app_login'));
+        */
+
+        // if admin... redirect to admin dashboard
+        if($token->getUser()->isAdmin()) {
+            return new RedirectResponse($this->urlGenerator->generate('admin_dashboard'));
+        }
+        // If not , redirect to homepage.
+        return new RedirectResponse($this->urlGenerator->generate('app_homepage'));
     }
 
     protected function getLoginUrl()

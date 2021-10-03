@@ -28,7 +28,11 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $userPasswordEncoderInterface, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
+    public function register(Request $request,
+                             UserPasswordEncoderInterface $userPasswordEncoderInterface,
+                             GuardAuthenticatorHandler $guardHandler,
+                             LoginFormAuthenticator $authenticator
+    ): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -49,7 +53,7 @@ class RegistrationController extends AbstractController
 
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
+               (new TemplatedEmail())
                     ->from(new Address('admin@urlshortener.com', 'Security'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
@@ -89,6 +93,6 @@ class RegistrationController extends AbstractController
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('app_homepage');
     }
 }

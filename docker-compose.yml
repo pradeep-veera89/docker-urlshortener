@@ -52,3 +52,12 @@ services:
 
     networks:
       - nginx-php74-mysql57
+
+  mailer-service:
+    image: schickling/mailcatcher
+    container_name: mailer-container
+    ports:
+      - "1025:1025"
+      - "1080:1080"
+    networks:
+      - nginx-php74-mysql57
