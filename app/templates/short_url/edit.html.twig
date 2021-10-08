@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ShortUrl{% endblock %}
+
+{% block body %}
+    <h1>Edit ShortUrl</h1>
+
+    {{ include('short_url/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('short_url_index') }}">back to list</a>
+
+    {{ include('short_url/_delete_form.html.twig') }}
+{% endblock %}

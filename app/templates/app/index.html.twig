@@ -1,12 +1,14 @@
 {% include 'base.html.twig' %}
 
-{% block title %} Dashboard {% endblock %}
+<main class="container">
+    {% block title %} Dashboard {% endblock %}
 
-{% block body %}
+    {% block body %}
 
-    {% for flashSuccess in app.flashes('success') %}
-        <div class="alert alert-success" role="alert">{{ flashSuccess }}</div>
-    {% endfor %}
+        {% for flashSuccess in app.flashes('success') %}
+            <div class="alert alert-success" role="alert">{{ flashSuccess }}</div>
+        {% endfor %}
 
-    <h1>Welcome,{{ app.user.email }} </h1>
-{% endblock %}
+        <h1>Welcome,{{ app.user.email }} </h1>
+    {% endblock %}
+</main>
