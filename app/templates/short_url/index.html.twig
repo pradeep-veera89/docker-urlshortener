@@ -9,22 +9,20 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Long_url</th>
-                <th>Counter</th>
-                <th>Token</th>
+                <th>Long Url</th>
+                <th>Short Url</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for short_url in short_urls %}
+        {% for url in urls %}
             <tr>
-                <td>{{ short_url.id }}</td>
-                <td>{{ short_url.longUrl }}</td>
-                <td>{{ short_url.counter }}</td>
-                <td>{{ short_url.token }}</td>
+                <td>{{ url.id }}</td>
+                <td>{{ url.long_url }}</td>
+                <td>{{ url.short_url }}</td>
                 <td>
-                    <a href="{{ path('short_url_show', {'id': short_url.id}) }}">show</a>
-                    <a href="{{ path('short_url_edit', {'id': short_url.id}) }}">edit</a>
+                    <a href="{{ path('short_url_edit', {'id': url.db_id}) }}">edit</a>
+                    <a href="{{ path('short_url_show', {'id': url.db_id}) }}">test</a>
                 </td>
             </tr>
         {% else %}

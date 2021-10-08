@@ -7,6 +7,8 @@ use App\Form\ShortUrlType;
 use App\Repository\ShortUrlRepository;
 use App\Repository\UserRepository;
 use App\Services\TokenService;
+use App\Services\TokenServices\TokenGenerator;
+use App\Services\UrlServices\UrlGeneratorService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,13 +20,42 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
  */
 class ShortUrlController extends AbstractController
 {
+    private AuthenticationUtils $authenticationUtils;
+    private UserRepository $userRepository;
+
+    public function __construct(
+        AuthenticationUtils $authenticationUtils,
+        UserRepository $userRepository
+    )
+    {
+        $this->authenticationUtils = $authenticationUtils;
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * @Route("/", name="short_url_index", methods={"GET"})
      */
-    public function index(ShortUrlRepository $shortUrlRepository): Response
+    public function index(
+        ShortUrlRepository $urlRepository,
+        UrlGeneratorService $urlGeneratorService
+    ): Response
     {
+        $email = $this->authenticationUtils->getLastUsername();
+        $user = $this->userRepository->findByEmail($email);
+        $urlObjs = $urlRepository->findBy(['user'=> $user->getId()]);
+        $url = [];
+        $id = 1;
+        foreach($urlObjs as $urlObj) {
+            $url[] = [
+                'db_id'=>$urlObj->getId(),
+                'id'=> $id++,
+                'long_url'=> $urlObj->getLongUrl(),
+                'short_url'=>  $urlGeneratorService->build($_ENV['HOSTNAME'], $urlObj->getToken())
+            ];
+        }
+
         return $this->render('short_url/index.html.twig', [
-            'short_urls' => $shortUrlRepository->findAll(),
+            'urls' => $url,
         ]);
     }
 
@@ -36,7 +67,7 @@ class ShortUrlController extends AbstractController
         AuthenticationUtils $authenticationUtils,
         UserRepository $userRepository,
         ShortUrlRepository $urlRepository,
-        TokenService $tokenService
+        TokenGenerator $tokenGenerator
     ): Response
     {
         $email = $authenticationUtils->getLastUsername();
@@ -53,11 +84,10 @@ class ShortUrlController extends AbstractController
             $counter = $urlRepository->getLatestCounterForUser($user->getId());
             $shortUrl->setCounter($counter + 1);
             $hostName = parse_url($shortUrl->getLongUrl(), PHP_URL_HOST);
-            $token = $tokenService->create($hostName, $counter, $user->getId());
+            $token = $tokenGenerator->create($hostName, $counter, $user->getId());
             if(! $urlRepository->isTokenUnique($token)) {
                 dd(sprintf('Token is not Unique %s', $token));
             }
-
             $shortUrl->setToken($token);
 
             $entityManager = $this->getDoctrine()->getManager();
